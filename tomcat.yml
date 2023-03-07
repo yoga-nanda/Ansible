@@ -44,7 +44,7 @@
       ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
-        src: tomcat.servic
+        src: tomcat.service
         dest: /etc/systemd/system/tomcat.service
         owner: tomcat
         group: tomcat
