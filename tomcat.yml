@@ -66,13 +66,13 @@
         dest: /opt/tomcat/latest/conf/tomcat-users.xml
         owner: tomcat
         group: tomcat
-    - name: Copy file with owner and permissions
+    - name: To enable manager interface
       ansible.builtin.copy:
         src: context.xml
         dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
         owner: tomcat
         group: tomcat 
-    - name: Copy file with owner and permissions
+    - name: To enable host Manager interface
       ansible.builtin.copy:
         src: HMCintext.xml
         dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
