@@ -40,3 +40,5 @@
         owner: tomcat
         group: tomcat
         state: directory
+    - name: Running command
+      ansible.builtin.command: chmod +x /opt/tomcat/latest/bin/*.sh
