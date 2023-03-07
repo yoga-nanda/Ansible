@@ -42,3 +42,15 @@
         state: directory
     - name: Running command
       ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: tomcat.servic
+        dest: /etc/systemd/system/tomcat.service
+        owner: tomcat
+        group: tomcat
+    - name: reload daemon and start tomcat
+      ansible.builtin.systemd:
+        name: tomcat.service
+        daemon_reload: yes
+        enabled: yes
+        state: started
