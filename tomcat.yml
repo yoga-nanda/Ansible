@@ -19,6 +19,10 @@
         home: /opt/tomcat
         shell: /bin/false
         state: present
+    - name: download tomcat 10.1.6
+      ansible.builtin.get_url:
+        url: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.6/bin/apache-tomcat-10.1.6.tar.gz
+        dest: /tmp/apache-tomcat-10.1.6.tar.gz
     - name: download toomcat 10.1.6
       ansible.builtin.unarchive:
         src: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.6/bin/apache-tomcat-10.1.6.tar.gz
