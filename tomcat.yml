@@ -8,8 +8,8 @@
         update_cache: yes
         state: present
     - name: Add the user tomcat
-      ansible.builtin.user:
-        group: tomcat
+      ansible.builtin.group:
+        name: tomcat
         state: present
     - name: Add the user tomcat
       ansible.builtin.user:
