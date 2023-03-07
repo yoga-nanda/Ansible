@@ -9,6 +9,10 @@
         state: present
     - name: Add the user tomcat
       ansible.builtin.user:
+        group: tomcat
+        state: present
+    - name: Add the user tomcat
+      ansible.builtin.user:
         name: tomcat
         create_home: yes
         group: tomcat
