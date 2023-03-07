@@ -54,3 +54,31 @@
         daemon_reload: yes
         enabled: yes
         state: started
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: tomcat.service
+        dest: /etc/systemd/system/tomcat.service
+        owner: tomcat
+        group: tomcat
+    - name: Adding tomcat users
+      ansible.builtin.copy:
+        src: tomcat.user.xml
+        dest: /opt/tomcat/latest/conf/tomcat-users.xml
+        owner: tomcat
+        group: tomcat
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: context.xml
+        dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
+        owner: tomcat
+        group: tomcat 
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: HMCintext.xml
+        dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
+        owner: tomcat
+        group: tomcat  
+    - name: restart tomcat
+      ansible.builtin.systemd:
+        name: tomcat.service
+        state: restarted
