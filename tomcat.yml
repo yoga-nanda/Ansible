@@ -41,4 +41,4 @@
         group: tomcat
         state: directory
     - name: Running command
-      ansible.builtin.command: chmod +x /opt/tomcat/latest/bin/*.sh
+      ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
