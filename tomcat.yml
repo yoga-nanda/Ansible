@@ -1,21 +1,25 @@
 - name: install tomcat 10 on ubuntu 20.4
   hosts: all
   become: yes
+  vars:
+    Java_package: openjdk-11-jdk
+    user_name: tomcat
+    user_group: tomcat
   tasks:
     - name: Install apache httpd  (state=present is optional)
       ansible.builtin.apt:
-        name: openjdk-11-jdk
+        name: '{{Java_package}}'
         update_cache: yes
         state: present
     - name: Add the user tomcat
       ansible.builtin.group:
-        name: tomcat
+        name: '{{ user_name }}'
         state: present
     - name: Add the user tomcat
       ansible.builtin.user:
-        name: tomcat
+        name: '{{ user_name }}'
         create_home: yes
-        group: tomcat
+        group: '{{ user_group }}' 
         home: /opt/tomcat
         shell: /bin/false
         state: present
@@ -37,8 +41,8 @@
       ansible.builtin.file:
         dest: /opt/tomcat
         recurse: true
-        owner: tomcat
-        group: tomcat
+        owner: '{{ user_name }}'
+        group: '{{ user_group }}' 
         state: directory
     - name: Running command
       ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
@@ -46,8 +50,8 @@
       ansible.builtin.copy:
         src: tomcat.service
         dest: /etc/systemd/system/tomcat.service
-        owner: tomcat
-        group: tomcat
+        owner: '{{ user_name }}'
+        group: '{{ user_group }}' 
     - name: reload daemon and start tomcat
       ansible.builtin.systemd:
         name: tomcat.service
@@ -58,26 +62,26 @@
       ansible.builtin.copy:
         src: tomcat.service
         dest: /etc/systemd/system/tomcat.service
-        owner: tomcat
-        group: tomcat
+        owner: '{{ user_name }}'
+        group: '{{ user_group }}' 
     - name: Adding tomcat users
       ansible.builtin.copy:
         src: tomcat.user.xml
         dest: /opt/tomcat/latest/conf/tomcat-users.xml
-        owner: tomcat
-        group: tomcat
+        owner: '{{ user_name }}'
+        group: '{{ user_group }}' 
     - name: To enable manager interface
       ansible.builtin.copy:
         src: context.xml
         dest: /opt/tomcat/latest/webapps/manager/META-INF/context.xml
-        owner: tomcat
-        group: tomcat 
+        owner: '{{ user_name }}'
+        group: '{{ user_group }}'  
     - name: To enable host Manager interface
       ansible.builtin.copy:
         src: HMCintext.xml
         dest: /opt/tomcat/latest/webapps/host-manager/META-INF/context.xml
-        owner: tomcat
-        group: tomcat  
+        owner: '{{ user_name }}'
+        group: '{{ user_group }}' 
     - name: restart tomcat
       ansible.builtin.systemd:
         name: tomcat.service
