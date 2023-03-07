@@ -29,18 +29,18 @@
         home: '{{ user_home }}'
         shell: '{{ user_shell }}'
         state: present
-    - name: download tomcat '{{ Version }}'
+    - name: download tomcat {{ Version }}'
       ansible.builtin.get_url:
-        url: https://www-eu.apache.org/dist/tomcat/tomcat-'{{ Major_Version }}'/v'{{ Version }}'/bin/apache-tomcat-'{{ Version }}'.tar.gz
-        dest: /tmp/apache-tomcat-'{{ Version }}'.tar.gz
-    - name: download tomcat '{{ Version }}'
+        url: https://www-eu.apache.org/dist/tomcat/tomcat-{{ Major_Version }}/v{{ Version }}/bin/apache-tomcat-{{ Version }}.tar.gz
+        dest: /tmp/apache-tomcat-{{ Version }}.tar.gz
+    - name: download tomcat {{ Version }}
       ansible.builtin.unarchive:
-        src: https://www-eu.apache.org/dist/tomcat/tomcat-'{{ Major_Version }}'/v'{{ Version }}'/bin/apache-tomcat-'{{ Version }}'.tar.gz
+        src: https://www-eu.apache.org/dist/tomcat/tomcat-{{ Major_Version }}/v{{ Version }}/bin/apache-tomcat-{{ Version }}.tar.gz
         remote_src: yes
         dest: /opt/tomcat/
     - name: create a symbolic link
       ansible.builtin.file:
-        src: /opt/tomcat/apache-tomcat-'{{ Version }}'
+        src: /opt/tomcat/apache-tomcat-{{ Version }}
         dest: /opt/tomcat/latest
         state: link
     - name: change permissions
