@@ -1,0 +1,9 @@
+- name: install tomcat 10 on ubuntu 20.4
+  hosts: any
+  become: yes
+  tasks:
+   - name: Install apache httpd  (state=present is optional)
+      ansible.builtin.apt:
+        name: openjdk-11-jdk
+        update_cache: yes
+        state: present
