@@ -5,8 +5,14 @@
     Java_package: openjdk-11-jdk
     user_name: tomcat
     user_group: tomcat
+    user_home: /opt/tomcat
+    user_shell: /bin/false
+    Version: 10.1.6
+    Major_Version: 10
+    tomcat_service_name: tomcat.service
+
   tasks:
-    - name: Install apache httpd  (state=present is optional)
+    - name: Install Java
       ansible.builtin.apt:
         name: '{{Java_package}}'
         update_cache: yes
@@ -20,21 +26,21 @@
         name: '{{ user_name }}'
         create_home: yes
         group: '{{ user_group }}' 
-        home: /opt/tomcat
-        shell: /bin/false
+        home: '{{ user_home }}'
+        shell: '{{ user_shell }}'
         state: present
-    - name: download tomcat 10.1.6
+    - name: download tomcat '{{ Version }}'
       ansible.builtin.get_url:
-        url: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.6/bin/apache-tomcat-10.1.6.tar.gz
-        dest: /tmp/apache-tomcat-10.1.6.tar.gz
-    - name: download toomcat 10.1.6
+        url: https://www-eu.apache.org/dist/tomcat/tomcat-'{{ Major_Version }}'/v'{{ Version }}'/bin/apache-tomcat-'{{ Version }}'.tar.gz
+        dest: /tmp/apache-tomcat-'{{ Version }}'.tar.gz
+    - name: download tomcat '{{ Version }}'
       ansible.builtin.unarchive:
-        src: https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.6/bin/apache-tomcat-10.1.6.tar.gz
+        src: https://www-eu.apache.org/dist/tomcat/tomcat-'{{ Major_Version }}'/v'{{ Version }}'/bin/apache-tomcat-'{{ Version }}'.tar.gz
         remote_src: yes
         dest: /opt/tomcat/
     - name: create a symbolic link
       ansible.builtin.file:
-        src: /opt/tomcat/apache-tomcat-10.1.6
+        src: /opt/tomcat/apache-tomcat-'{{ Version }}'
         dest: /opt/tomcat/latest
         state: link
     - name: change permissions
@@ -48,20 +54,20 @@
       ansible.builtin.command: sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
-        src: tomcat.service
-        dest: /etc/systemd/system/tomcat.service
+        src: '{{ tomcat_service_name }}'
+        dest: /etc/systemd/system/'{{ tomcat_service_name }}'
         owner: '{{ user_name }}'
         group: '{{ user_group }}' 
     - name: reload daemon and start tomcat
       ansible.builtin.systemd:
-        name: tomcat.service
+        name: '{{ tomcat_service_name }}'
         daemon_reload: yes
         enabled: yes
         state: started
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
-        src: tomcat.service
-        dest: /etc/systemd/system/tomcat.service
+        src: '{{ tomcat_service_name }}'
+        dest: /etc/systemd/system/'{{ tomcat_service_name }}'
         owner: '{{ user_name }}'
         group: '{{ user_group }}' 
     - name: Adding tomcat users
@@ -84,5 +90,5 @@
         group: '{{ user_group }}' 
     - name: restart tomcat
       ansible.builtin.systemd:
-        name: tomcat.service
+        name: '{{ tomcat_service_name }}'
         state: restarted
