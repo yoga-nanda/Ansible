@@ -92,3 +92,6 @@
       ansible.builtin.systemd:
         name: '{{ tomcat_service_name }}'
         state: restarted
+    - name: print variables
+      ansible.builtin.debug:
+        var: name

@@ -1,1 +1,6 @@
-172.31.30.166
+[localhost]
+3.101.112.45 name=acn
+[Ubuntu]
+172.31.21.192 name=Node1
+[webservers]
+web[01:05].qt.com
