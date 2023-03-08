@@ -1,5 +1,5 @@
 - name: install tomcat 10 on ubuntu 20.4
-  hosts: all
+  hosts: Ubuntu
   become: yes
   vars:
     Java_package: openjdk-11-jdk
